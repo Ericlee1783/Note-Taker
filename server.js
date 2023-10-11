@@ -2,7 +2,10 @@ const express = require('express');
 const path = require('path');
 const data = require('./db/db.json')
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
+const { v4: uuidv4 } = require('uuid');
+let notes = [];
 
 app.use(express.static('public'));
 
@@ -20,14 +23,18 @@ app.get('*', (req, res) =>
 
 
 app.get('/api/notes', (req, res) => {
-  res.send(data);
-  console.log(data);
+  res.json(data);
 })
 
 app.post('/api/notes', (req, res) => {
-  res.send(data);
-  console.log(data);
-})
+  const newNote = {
+    id: uuidv4(),
+    title: req.body.title,
+    text: req.body.text
+  };
+  notes.push(newNote);
+  res.json(newNote);
+});
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
