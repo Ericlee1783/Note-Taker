@@ -42,6 +42,12 @@ app.post('/api/notes', (req, res) => {
   res.json(newNote);
 });
 
+app.delete('/api/notes/:id', (req, res) => {
+  const noteId = req.params.id;
+  notes = notes.filter(note => note.id !== noteId);
+  res.json({ message: 'Note deleted' });
+})
+
 
 app.get('*', (req, res) =>
 res.sendFile(path.join(__dirname, 'public/index.html'))
